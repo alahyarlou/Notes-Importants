@@ -63,3 +63,95 @@ morgan("combined", {
   },
 });
 ```
+
+---
+
+### CamelCase-Keys middelware
+
+```bash
+npm install camelcase-keys
+```
+
+```js
+const express = require("express");
+const camelcaseKey = (...args) =>
+  import("camelcase-keys").then(({ default: camelcaseKeys }) =>
+    camelcaseKeys(...args)
+  );
+app = express();
+
+console.log(camelcaseKey("Foo-Bar"));
+
+/* OUTPUT */
+
+// fooBar
+```
+
+- Convert object Input:
+
+```js
+const camelcase = require("camelcase-input").camelcase;
+
+console.log(camelcase({ "foo-bar": true }));
+
+/* OUTPUT */
+// { fooBar: true }
+```
+
+- Convert array of objects Input
+
+```js
+const camelcase = require("camelcase-input").camelcase;
+console.log(camelcase([{ "foo-bar": true }, { is_that_you: true }]))[
+  /* OUTPUT */
+  ({ fooBar: true }, { isThatYou: true })
+];
+```
+
+- Convert array of string Input
+
+```js
+const camelcase = require("camelcase-input").camelcase;
+console.log(camelcase(["Foo-Bar", "are-you-there"]));
+/* OUTPUT */
+// fooBar, areYouThere
+```
+
+- Convert array of objects Input ({ deep: true })
+
+```js
+const camelcase = require('camelcase-input').camelcase
+console.log(camelcase([{'FOo-bar': [{'abc-df__r': true}, {'tghd_dfdf--ee': true}]},
+{'bar-foo': { 'Test-te': {'opt-tdt': 'dfdfdf'} }}],
+{ deep: true })))
+
+/* OUTPUT */
+// [{ fooBar: [{ abcDfR: true }, { tghdDfdfEe: true }] },
+//  { barFoo: { testTe: { optTdt: dfdfdf } } }]
+```
+
+### OmitEmpty middelware
+
+```bash
+$ npm install --save omit-empty
+```
+
+```js
+const omitEmpty = require("omit-empty");
+
+console.log(omitEmpty({ a: "a", b: "" }));
+//=> { a: 'a' }
+
+console.log(omitEmpty({ a: "a", b: { c: "c", d: "" } }));
+//=> { a: 'a', b: { c: 'c' } }
+
+console.log(omitEmpty({ a: ["a"], b: [] }));
+//=> { a: ['a'] }
+
+console.log(omitEmpty({ a: 0, b: 1 }));
+//=> { a: 0, b: 1 }
+
+// set omitZero to true, to evaluate "0" as falsey
+console.log(omitEmpty({ a: 0, b: 1 }, { omitZero: true }));
+//=> { b: 1 }
+```
